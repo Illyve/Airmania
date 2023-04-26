@@ -59,10 +59,10 @@ public class AirplaneController : MonoBehaviour
             brakesTorque = brakesTorque > 0 ? 0 : 500f;
         }
 
-        displayText.text = "V: " + ((int)rb.velocity.magnitude).ToString("D3") + " m/s\n";
-        displayText.text += "A: " + ((int)transform.position.y).ToString("D4") + " m\n";
-        displayText.text += "T: " + (int)(thrustPercent * 100) + "%\n";
-        displayText.text += brakesTorque > 0 ? "B: ON" : "B: OFF";
+        //displayText.text = "V: " + ((int)rb.velocity.magnitude).ToString("D3") + " m/s\n";
+        //displayText.text += "A: " + ((int)transform.position.y).ToString("D4") + " m\n";
+        //displayText.text += "T: " + (int)(thrustPercent * 100) + "%\n";
+        //displayText.text += brakesTorque > 0 ? "B: ON" : "B: OFF";
     }
 
     private void FixedUpdate()
