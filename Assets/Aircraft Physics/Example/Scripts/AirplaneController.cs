@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AirplaneController : MonoBehaviour
+public abstract class AirplaneController : MonoBehaviour
 {
     [SerializeField]
     List<AeroSurface> controlSurfaces = null;
@@ -23,49 +23,25 @@ public class AirplaneController : MonoBehaviour
     public float Roll;
     [Range(0, 1)]
     public float Flap;
-    [SerializeField]
-    Text displayText = null;
 
-    float thrustPercent;
-    float brakesTorque;
+    public float thrustPercent;
+    public float brakesTorque;
 
-    AircraftPhysics aircraftPhysics;
-    Rigidbody rb;
+    protected AircraftPhysics aircraftPhysics;
+    protected Rigidbody rb;
 
-    private void Start()
+    protected virtual void Start()
     {
         aircraftPhysics = GetComponent<AircraftPhysics>();
         rb = GetComponent<Rigidbody>();
     }
 
-    private void Update()
+    void Update()
     {
-        Pitch = Input.GetAxis("Vertical");
-        Roll = Input.GetAxis("Horizontal");
-        Yaw = Input.GetAxis("Yaw");
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            thrustPercent = thrustPercent > 0 ? 0 : 1f;
-        }
-
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            Flap = Flap > 0 ? 0 : 0.3f;
-        }
-
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            brakesTorque = brakesTorque > 0 ? 0 : 500f;
-        }
-
-        displayText.text = "V: " + ((int)rb.velocity.magnitude).ToString("D3") + " m/s\n";
-        displayText.text += "A: " + ((int)transform.position.y).ToString("D4") + " m\n";
-        displayText.text += "T: " + (int)(thrustPercent * 100) + "%\n";
-        displayText.text += brakesTorque > 0 ? "B: ON" : "B: OFF";
     }
 
-    private void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         SetControlSurfecesAngles(Pitch, Roll, Yaw, Flap);
         aircraftPhysics.SetThrustPercent(thrustPercent);
