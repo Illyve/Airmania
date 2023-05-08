@@ -6,25 +6,25 @@ using UnityEngine.UI;
 public class PlayerController : AirplaneController
 {
     [SerializeField]
-    Text displayText = null;
+    Text displayText;
 
     InputRecorder recorder;
+    LevelInfo levelInfo;
 
+    bool thrust;
+    bool flap;
+    bool brake;
 
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
         recorder = new InputRecorder();
+        levelInfo = GetComponent<LevelInfo>();
     }
 
     // Update is called once per frame
     void Update()
-    {
-
-    }
-
-    protected override void FixedUpdate()
     {
         Pitch = Input.GetAxis("Vertical");
         Roll = Input.GetAxis("Horizontal");
@@ -48,7 +48,10 @@ public class PlayerController : AirplaneController
         {
             brakesTorque = brakesTorque > 0 ? 0 : 500f;
         }
+    }
 
+    protected override void FixedUpdate()
+    {
         recorder.Step(Pitch, Roll, Yaw, thrust, flap, brake);
 
         if (Input.GetKeyDown(KeyCode.Return))
@@ -59,7 +62,8 @@ public class PlayerController : AirplaneController
         displayText.text = "V: " + ((int)rb.velocity.magnitude).ToString("D3") + " m/s\n";
         displayText.text += "A: " + ((int)transform.position.y).ToString("D4") + " m\n";
         displayText.text += "T: " + (int)(thrustPercent * 100) + "%\n";
-        displayText.text += brakesTorque > 0 ? "B: ON" : "B: OFF";
+        displayText.text += brakesTorque > 0 ? "B: ON" : "B: OFF" + "\n";
+        displayText.text += levelInfo.checkpointIndex;
 
         base.FixedUpdate();
     }
