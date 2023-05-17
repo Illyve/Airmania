@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LevelInfo : MonoBehaviour
 {
+    public string levelName;
     public CheckpointTrigger[] checkpoints;
     public int checkpointIndex;
 

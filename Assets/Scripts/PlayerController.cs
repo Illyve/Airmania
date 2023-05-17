@@ -30,9 +30,18 @@ public class PlayerController : AirplaneController
         Roll = Input.GetAxis("Horizontal");
         Yaw = Input.GetAxis("Yaw");
 
-        bool thrust = Input.GetKeyDown(KeyCode.Space);
-        bool flap = Input.GetKeyDown(KeyCode.F);
-        bool brake = Input.GetKeyDown(KeyCode.B);
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            thrust = true;
+        }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            flap = true;
+        }
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            brake = true;
+        }
 
         if (thrust)
         {
@@ -54,10 +63,9 @@ public class PlayerController : AirplaneController
     {
         recorder.Step(Pitch, Roll, Yaw, thrust, flap, brake);
 
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            recorder.SaveFile("tutorial");
-        }
+        thrust = false;
+        flap = false;
+        brake = false;
 
         displayText.text = "V: " + ((int)rb.velocity.magnitude).ToString("D3") + " m/s\n";
         displayText.text += "A: " + ((int)transform.position.y).ToString("D4") + " m\n";
@@ -67,4 +75,6 @@ public class PlayerController : AirplaneController
 
         base.FixedUpdate();
     }
+
+    public void SaveFile(string level) => recorder.SaveFile(level);
 }

@@ -14,6 +14,7 @@ public class GhostController : AirplaneController
         string path = Application.persistentDataPath + "/tutorial.dat";
         if (File.Exists(path))
         {
+            Debug.Log("A");
             reader = new BinaryReader(new FileStream(path, FileMode.Open, FileAccess.Read));
             gameObject.SetActive(true);
         }
@@ -71,5 +72,15 @@ public class GhostController : AirplaneController
         }
 
         base.FixedUpdate();
+    }
+
+    public void Stop()
+    {
+        if (reader != null)
+        {
+            reader.Close();
+            reader = null;
+            gameObject.SetActive(false);
+        }
     }
 }

@@ -20,7 +20,10 @@ public class CheckpointTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        LevelInfo levelInfo = other.GetComponentInParent<LevelInfo>();
-        levelInfo.checkpointIndex = checkpointIndex;
+        if (other.GetComponentInParent<LevelInfo>() is LevelInfo levelInfo && levelInfo.checkpointIndex == checkpointIndex - 1)
+        {
+            levelInfo.checkpointIndex = checkpointIndex;
+        }
+        
     }
 }
