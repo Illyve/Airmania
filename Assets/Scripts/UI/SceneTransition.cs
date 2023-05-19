@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneTransition : MonoBehaviour
 {
-    public SceneAsset scene;
+    public string sceneName;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +22,6 @@ public class SceneTransition : MonoBehaviour
 
     public void Transition()
     {
-        SceneManager.LoadScene(scene.name);
+        SceneManager.LoadScene(sceneName);
     }
 }
