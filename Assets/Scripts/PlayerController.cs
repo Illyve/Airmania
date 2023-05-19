@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerController : AirplaneController
 {
     [SerializeField]
-    Text displayText;
+    TextMeshProUGUI displayText;
 
     InputRecorder recorder;
     LevelInfo levelInfo;
@@ -42,6 +43,11 @@ public class PlayerController : AirplaneController
         {
             brake = true;
         }
+    }
+
+    protected override void FixedUpdate()
+    {
+        recorder.Step(Pitch, Roll, Yaw, thrust, flap, brake);
 
         if (thrust)
         {
@@ -57,11 +63,6 @@ public class PlayerController : AirplaneController
         {
             brakesTorque = brakesTorque > 0 ? 0 : 500f;
         }
-    }
-
-    protected override void FixedUpdate()
-    {
-        recorder.Step(Pitch, Roll, Yaw, thrust, flap, brake);
 
         thrust = false;
         flap = false;
@@ -70,8 +71,6 @@ public class PlayerController : AirplaneController
         displayText.text = "V: " + ((int)rb.velocity.magnitude).ToString("D3") + " m/s\n";
         displayText.text += "A: " + ((int)transform.position.y).ToString("D4") + " m\n";
         displayText.text += "T: " + (int)(thrustPercent * 100) + "%\n";
-        displayText.text += brakesTorque > 0 ? "B: ON" : "B: OFF" + "\n";
-        displayText.text += levelInfo.checkpointIndex;
 
         base.FixedUpdate();
     }

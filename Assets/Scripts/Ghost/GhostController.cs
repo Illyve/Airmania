@@ -6,17 +6,21 @@ using UnityEngine;
 public class GhostController : AirplaneController
 {
     BinaryReader reader;
+    public string replayName;
 
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
-        string path = Application.persistentDataPath + "/tutorial.dat";
+        string path = Application.persistentDataPath + "/" + replayName + ".dat";
         if (File.Exists(path))
         {
-            Debug.Log("A");
             reader = new BinaryReader(new FileStream(path, FileMode.Open, FileAccess.Read));
             gameObject.SetActive(true);
+        }
+        else
+        {
+            gameObject.SetActive(false);
         }
     }
 

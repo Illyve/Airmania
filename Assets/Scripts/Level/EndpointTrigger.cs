@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class EndpointTrigger : MonoBehaviour
 {
     public GameObject levelFinish;
     public GhostController ghost;
+    public Timer timer;
+    public TextMeshProUGUI time;
 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +32,10 @@ public class EndpointTrigger : MonoBehaviour
         {
             ghost.Stop();
             ghost.gameObject.SetActive(false);
+            timer.running = false;
             player.SaveFile(levelInfo.levelName);
+
+            time.text = timer.GetTime(); 
             levelFinish.SetActive(true);
         }
     }
