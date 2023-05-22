@@ -6,12 +6,12 @@ public class CheckpointTrigger : MonoBehaviour
 {
     public int checkpointIndex;
 
-    AudioSource audio;
+    AudioSource source;
 
     // Start is called before the first frame update
     void Start()
     {
-        audio = GetComponent<AudioSource>();
+        source = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -25,7 +25,7 @@ public class CheckpointTrigger : MonoBehaviour
         if (other.GetComponentInParent<LevelInfo>() is LevelInfo levelInfo && levelInfo.checkpointIndex == checkpointIndex - 1)
         {
             levelInfo.checkpointIndex = checkpointIndex;
-            audio.Play();
+            source.Play();
         }
         
     }

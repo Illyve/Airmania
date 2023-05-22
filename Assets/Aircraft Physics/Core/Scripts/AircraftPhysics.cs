@@ -10,18 +10,7 @@ public class AircraftPhysics : MonoBehaviour
     const float PREDICTION_TIMESTEP_FRACTION = 0.5f;
     [SerializeField]
     float thrust = 8000;
-    float boostSpeed = 4f;
-    float boostCooldown = 8f;
-    float boostTimer = 4f;
-    float timer= 0f;
-    float timerInterpolation;
-    float startedBoost = 0f;
-    float cooldownBoost = 0f;
-    bool hasCooldown;
-    float slowDown = 10f;
-    bool hasSlowedDown = false;
-    bool startedBoosts = true;
-    bool pressedDown = false;
+
     [SerializeField] 
     List<AeroSurface> aerodynamicSurfaces = null;
     Rigidbody rb;
@@ -32,38 +21,6 @@ public class AircraftPhysics : MonoBehaviour
     public void SetThrustPercent(float percent)
     {
         thrustPercent = percent;
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !hasCooldown && !pressedDown)
-        {
-            if(startedBoosts == true)
-            {
-                startedBoost = timer;
-                startedBoosts = false;
-                
-            }
-            Debug.Log(startedBoost);
-            startedBoost = timer;
-            Debug.Log("Speeding up!");
-            pressedDown = true;
-            
-            
-        }
-
-        if ((timer - startedBoost) >= boostTimer && pressedDown == true)
-        {
-            Debug.Log("On cooldown!");
-            timer = cooldownBoost;
-            hasCooldown = true;
-            hasSlowedDown = false;
-            pressedDown = false;
-        }
-        else {
-            if ((timer - cooldownBoost) >= boostCooldown)
-            {
-                startedBoosts = true;
-                hasCooldown = false;
-            
-            }
-        } 
     }
 
     private void Awake()
@@ -72,31 +29,6 @@ public class AircraftPhysics : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        timerInterpolation =  Time.deltaTime;
-        timer += Time.deltaTime;
-        if (pressedDown)
-        {
-            Debug.Log(thrust);
-            thrust = Mathf.Lerp(thrust, (thrust * boostSpeed *.3f), timerInterpolation);
-            if(timerInterpolation > 1.0f)
-            {
-                timerInterpolation = 0.0f;
-            }
-        }
-        else
-        {
-            if ((timer-startedBoost) >= 1 && hasSlowedDown && (timer-startedBoost) <= 2.5)
-            {
-                thrust = Mathf.Lerp(thrust, (thrust / (boostSpeed*.52f)), timerInterpolation);
-                Debug.Log(thrust);
-            }
-            Debug.Log(thrust);
-            if(timerInterpolation > 1.0f)
-            {
-                timerInterpolation = 0.0f;
-            }
-        }
-
         BiVector3 forceAndTorqueThisFrame = 
             CalculateAerodynamicForces(rb.velocity, rb.angularVelocity, Vector3.zero, 1.2f, rb.worldCenterOfMass);
 
@@ -113,17 +45,6 @@ public class AircraftPhysics : MonoBehaviour
         rb.AddTorque(currentForceAndTorque.q);
 
         rb.AddForce(transform.forward * thrust * thrustPercent);
-       if (slowDown > .15 && hasCooldown && !hasSlowedDown) {
-            rb.AddForce(-currentForceAndTorque.p * slowDown);
-            rb.AddTorque(-currentForceAndTorque.q * slowDown);
-            rb.AddForce(-transform.forward * thrust * thrustPercent * slowDown);
-            hasSlowedDown = true;
-            Debug.Log("Slowing down!");
-        }
-        else
-        {
-            slowDown = 2f;
-        }
     }
 
     private BiVector3 CalculateAerodynamicForces(Vector3 velocity, Vector3 angularVelocity, Vector3 wind, float airDensity, Vector3 centerOfMass)

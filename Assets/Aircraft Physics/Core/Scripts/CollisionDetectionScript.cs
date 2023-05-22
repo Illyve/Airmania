@@ -36,7 +36,7 @@ public class CollisionDetectionScript : MonoBehaviour
             Instantiate(shatteredAirplane, rb.position, rb.rotation);
             GetComponent<Rigidbody>().AddExplosionForce(10000, position, 5000, 5.0f);
             hasHit = true;
-            Destroy(gameObject);          
+            gameObject.SetActive(false);        
         }
     }
 }

@@ -30,6 +30,12 @@ public abstract class AirplaneController : MonoBehaviour
     protected AircraftPhysics aircraftPhysics;
     protected Rigidbody rb;
 
+    protected float targetThrustPercent;
+
+    float initialThrustPercent;
+
+    float time;
+
     protected virtual void Start()
     {
         aircraftPhysics = GetComponent<AircraftPhysics>();

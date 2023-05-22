@@ -27,10 +27,19 @@ public class PlayerController : AirplaneController
 
     public void Update()
     {
-        displayText.text = "V: " + ((int)rb.velocity.magnitude).ToString("D3") + " m/s\n";
-        displayText.text += "A: " + ((int)transform.position.y).ToString("D4") + " m\n";
-        displayText.text += "T: " + (int)(thrustPercent * 100) + "%\n";
-        displayText.text += brakesTorque > 0 ? "B: ON" : "B: OFF";
+        Pitch = Input.GetAxis("Vertical");
+        Roll = Input.GetAxis("Horizontal");
+        Yaw = Input.GetAxis("Yaw");
+        thrust = Input.GetKey(KeyCode.Space);
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            flap = true;
+        }
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            brake = true;
+        }
     }
 
     protected override void FixedUpdate()
@@ -39,7 +48,11 @@ public class PlayerController : AirplaneController
 
         if (thrust)
         {
-            thrustPercent = thrustPercent > 0 ? 0 : 1f;
+            thrustPercent = 1.0f;
+        }
+        else
+        {
+            thrustPercent = 0.0f;
         }
 
         if (flap)
@@ -52,7 +65,6 @@ public class PlayerController : AirplaneController
             brakesTorque = brakesTorque > 0 ? 0 : 500f;
         }
 
-        thrust = false;
         flap = false;
         brake = false;
 

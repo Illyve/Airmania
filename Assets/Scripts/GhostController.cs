@@ -33,6 +33,11 @@ public class GhostController : AirplaneController
             {
                 try
                 {
+                    Pitch = 0.0f;
+                    Roll = 0.0f;
+                    Yaw = 0.0f;
+                    thrustPercent = 0.0f;
+
                     byte count = reader.ReadByte();
                     while (count > 0)
                     {
@@ -48,7 +53,7 @@ public class GhostController : AirplaneController
                                 Yaw = reader.ReadSingle();
                                 break;
                             case 'T':
-                                thrustPercent = thrustPercent > 0 ? 0 : 1f;
+                                thrustPercent = 1.0f;
                                 break;
                             case 'F':
                                 Flap = Flap > 0 ? 0 : 0.3f;
@@ -56,6 +61,7 @@ public class GhostController : AirplaneController
                             case 'B':
                                 brakesTorque = brakesTorque > 0 ? 0 : 500f;
                                 break;
+
                         }
                         count--;
                     }

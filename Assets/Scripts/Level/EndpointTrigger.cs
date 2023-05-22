@@ -10,12 +10,12 @@ public class EndpointTrigger : MonoBehaviour
     public Timer timer;
     public TextMeshProUGUI time;
 
-    AudioSource audio;
+    AudioSource source;
 
     // Start is called before the first frame update
     void Start()
     {
-        audio = GetComponent<AudioSource>();
+        source = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -32,7 +32,7 @@ public class EndpointTrigger : MonoBehaviour
             levelInfo != null &&
             levelInfo.checkpointIndex == levelInfo.checkpoints.Length)
         {
-            audio.Play();
+            source.Play();
 
             ghost.Stop();
             ghost.gameObject.SetActive(false);
